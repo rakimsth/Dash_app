@@ -1,3 +1,5 @@
+###############################################################################
+# import required packages
 import pandas as pd
 import numpy as np
 import os
@@ -10,23 +12,23 @@ from dash.dependencies import Input, Output
 from datetime import datetime as dt
 import re
 
-
+###############################################################################
 # Step 1. Launch the application
 app = dash.Dash()
-
+###############################################################################
 # Step 2. Import the dataset
-filepath = 'https://raw.githubusercontent.com/ateetmaharjan/Dash_app/master/dailyload5zone.csv'
-st = pd.read_csv(filepath)
+path = 'https://raw.githubusercontent.com/ateetmaharjan/Dash_app/master/dailyload5zone.csv'
+st = pd.read_csv(path)
 st.head()
 
-
+###############################################################################
 # Step 3. Create a plotly figure
 
 trace_1 = go.Scatter(x=st.datetime, y=st['zone_1'], name='zone_1',
                      line=dict(width=2, color='rgb(229, 151, 50)'))
 
 layout = dict(
-    title=dict(text="<b>Timeseries plot for daily demand for energy</b>",
+    title=dict(text="<b>Timeseries plot for daily demand of energy loads</b>",
                y=0.9, x=0.5, font_size=18),
     hovermode='x', hoverlabel=dict(font_color='white'),
     xaxis=dict(
@@ -34,22 +36,24 @@ layout = dict(
         rangeslider_visible=True,
         rangeselector=dict(
             buttons=list([
-                dict(count=1, label="1m", step="month",
+                dict(count=1, label="1 month", step="month",
                      stepmode="backward"),
-                dict(count=6, label="6m", step="month",
+                dict(count=6, label="6 month", step="month",
                      stepmode="backward"),
-                dict(count=1, label="1y", step="year",
+                dict(count=1, label="1 year", step="year",
                      stepmode="backward"),
-                dict(step="all")
+                dict(label='full data', step="all")
             ])
         )
     ),
-    yaxis=dict(title="<b>Load demand</b>", linecolor='black', linewidth=1),
+    yaxis=dict(title="<b>Energy Load (in kW)</b>",
+               linecolor='black', linewidth=1),
     font=dict(family="Helvetica", size=12, color="black"),
     paper_bgcolor="white",
     template="plotly",
 )
 fig = go.Figure(data=[trace_1], layout=layout)
+###############################################################################
 
 # dropdown options
 
@@ -74,20 +78,22 @@ dates = [
     '2007-01-01', '2007-05-01', '2007-09-01',
     '2008-01-01', '2008-05-01', '2008-06-22'
 ]
+###############################################################################
 
 # Step 4. Create a Dash layout
 app.layout = html.Div([
     # a header and a paragraph
     html.Div([
         html.H1("Daily load demand for each zone"),
-        html.P("Daily demand of energy loads for each zone...")
+        html.P(
+            "The timeseries plot shows daily load (in kW) measurements for 5 geographic sub-areas (e.g., residential and industrial zones) from January 2015 to June 2019.")
     ],
         style={'padding': '50px',
                'backgroundColor': 'yellow'}),
 
-    # dropdown
+    # dropdown menu options
     html.P(
-        [html.Label("Choose zone to display demand plot"),
+        [html.Label("Choose each zone to display energy load plot"),
          dcc.Dropdown(id='opt',
                       options=opts,
                       value='zone_1')],
@@ -113,6 +119,7 @@ app.layout = html.Div([
               'padding-left': '100px',
                           'display': 'inline-block'})
 ])
+###############################################################################
 
 # Step 5. Add callback functions
 
@@ -157,6 +164,7 @@ def update_figure(input1, input2):
 #     fig = go.Figure(data=[trace_1, trace_2], layout=layout)
 #     return fig
 
+###############################################################################
 
 # # Step 6. Add the server clause
 

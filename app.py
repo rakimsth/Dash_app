@@ -1,7 +1,5 @@
 ###############################################################################
 # import required packages
-import flask
-import os
 import pandas as pd
 import numpy as np
 import dash_html_components as html
@@ -15,6 +13,7 @@ from datetime import datetime as dt
 ###############################################################################
 # Step 1. Launch the application
 app = dash.Dash()
+server = app.server
 ###############################################################################
 # Step 2. Import the dataset
 path = 'https://raw.githubusercontent.com/ateetmaharjan/Dash_app/master/dailyload5zone.csv'
@@ -168,12 +167,8 @@ def update_figure(input1, input2):
 
 # # Step 6. Add the server clause
 
-# if __name__ == '__main__':
-#     # For Development only, otherwise use gunicorn or uwsgi to launch, e.g.
-#     # gunicorn -b 0.0.0.0:8050 index:app.server
-#     app.run_server(port=8050,
-#                    host='0.0.0.0', debug=True
-#                    )
+if __name__ == "__main__":
+    app.run_server()
 
-if __name__ == '__main__':
-    app.run_server(debug=True)
+# if __name__ == '__main__':
+#     app.run_server(debug=True)

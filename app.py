@@ -9,7 +9,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 from dash.dependencies import Input, Output
 from datetime import datetime as dt
-import re
 
 ###############################################################################
 # Step 1. Launch the application
